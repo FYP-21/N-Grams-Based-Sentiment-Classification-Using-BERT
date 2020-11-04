@@ -9,32 +9,33 @@ from nltk. util import ngrams
 from CorpusInfo import CorpusFileList
 import re, string, collections
 
-FileNum = 0
+def MakeBigrams():
+    FileNum = 0
 
-while FileNum < 164:
-    with open(CorpusFileList[FileNum], "r", encoding='ANSI') as file:
-        text = file.read()    
-    file.close()
+    while FileNum < 164:
+        with open(CorpusFileList[FileNum], "r", encoding='ANSI') as file:
+            text = file.read()    
     
-    text = re.sub('<.*>', '', text)
-    text = re.sub('ENDOFARTICLE.', '', text)
+        text = re.sub('<.*>', '', text)
+        text = re.sub('ENDOFARTICLE.', '', text)
 
-    punctuationNoPeriod = "[" + re.sub("\.", "", string.punctuation) + "]"
+        punctuationNoPeriod = "[" + re.sub("\.", "", string.punctuation) + "]"
 
-    text = re.sub(punctuationNoPeriod, "", text)
+        text = re.sub(punctuationNoPeriod, "", text)
 
-    tokenized = text.split()
-    Bigrams = ngrams(tokenized, 2)
-
-    BigramsFreq = collections.Counter(Bigrams)
-    #BigramsFreq.items()
-
-    numberOfBigrams = len(BigramsFreq)
-
-    with open("C:/Dev/FYP/N-Grams/Bigrams/"+ str(FileNum) +".txt", "w") as file:
-        print(BigramsFreq, file = file)
+        tokenized = text.split()
+        Bigrams = ngrams(tokenized, 2)
     
-    FileNum+=1
+        BigramsFreq = collections.Counter(Bigrams)
+        #BigramsFreq.items()
+
+        #numberOfBigrams = len(BigramsFreq)
+
+        with open("C:/Dev/FYP/N-Grams/Bigrams/"+ str(FileNum) +".txt", "w") as file:
+            #print(BigramsFreq, file = file)
+            for key in BigramsFreq.keys():
+                print(str(key) + ":" + str(BigramsFreq[key]), file = file)
     
-    print("File " + str(FileNum) + " done")
-    file.close()
+        FileNum+=1
+    
+        print("Bigrams File " + str(FileNum) + " done")
